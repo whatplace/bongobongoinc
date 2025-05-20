@@ -10,16 +10,17 @@ layout: page
   
   <form>
     <div class="form-group">
-      <label for="domain">Domain Name:</label>
-      <input type="text" id="domain" name="domain" placeholder="mathongosbongos.com">
+      <label>Domain: mathongosbongos.com</label>
     </div>
     
     <div class="form-group">
       <label for="years">Registration Period:</label>
       <select id="years" name="years">
-        <option value="1">1 Year ($12.99)</option>
-        <option value="2">2 Years ($24.99)</option>
-        <option value="5">5 Years ($59.99)</option>
+        <option value="0.0001">0.0001 Year ($1,337.42)</option>
+        <option value="banana">Banana Years (price varies)</option>
+        <option value="∞">Forever (requires soul)</option>
+        <option value="random">Random Duration (surprise!)</option>
+        <option value="backwards">-3 Years (we pay you $∞)</option>
       </select>
     </div>
     
