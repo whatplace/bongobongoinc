@@ -1,54 +1,35 @@
-title: mathongosbongos.com Domain Services
-email: support@mathongosbongos.com
+lsi: false
+safe: true
+source: ./
+incremental: false
+highlighter: rouge
+gist:
+  noscript: false
+kramdown:
+  math_engine: mathjax
+  syntax_highlighter: rouge
+
+
+title: Bongo Bongo Inc
+email: support@example.com
 description: >-
-  Official domain registration and management for mathongosbongos.com.
-  Register, renew, or transfer your mathongosbongos.com domain with ease.
-baseurl: ""
-url: "https://mathongosbongos.com"
-twitter_username: mathongosbongos
-github_username: mathongosbongos
+  Official website for Bongo Bongo Inc
+baseurl: "" # Leave empty if serving from root domain
+url: "https://whatplace.github.io" # GitHub Pages URL
+twitter_username: Bongo
+github_username: Bongo
 
 # Build settings
 theme: minima
 plugins:
   - jekyll-feed
+  - jekyll-seo-tag
 
 # Exclude from processing
 exclude:
   - Gemfile
   - Gemfile.lock
   - vendor
-
-# Custom variables
-domain: mathongosbongos.com
-support_email: hr.noreply@mathongosbongos.com
-
-title: mathongosbongos.com Domain Services
-email: support@mathongosbongos.com
-description: >-
-  Official domain registration and management for mathongosbongos.com.
-  Register, renew, or transfer your mathongosbongos.com domain with ease.
-baseurl: ""
-url: "https://mathongosbongos.com"
-twitter_username: mathongosbongos
-github_username: mathongosbongos
-
-# Domain pricing configuration
-domain_pricing:
-  com: 12.99
-  net: 14.99
-  org: 10.99
-  io: 29.99
-
-support:
-  phone: 1-800-MATHONGOS
-  hours: "24/7"
-  chat: true
-
-# Build settings
-theme: minima
-plugins:
-  - jekyll-feed
 
 # Exclude from processing.
 # The following items will not be processed, by default.
