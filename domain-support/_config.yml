@@ -1,0 +1,71 @@
+title: mathongosbongos.com Domain Services
+email: support@mathongosbongos.com
+description: >-
+  Official domain registration and management for mathongosbongos.com.
+  Register, renew, or transfer your mathongosbongos.com domain with ease.
+baseurl: ""
+url: "https://mathongosbongos.com"
+twitter_username: mathongosbongos
+github_username: mathongosbongos
+
+# Build settings
+theme: minima
+plugins:
+  - jekyll-feed
+
+# Exclude from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+
+# Custom variables
+domain: mathongosbongos.com
+support_email: hr.noreply@mathongosbongos.com
+
+title: mathongosbongos.com Domain Services
+email: support@mathongosbongos.com
+description: >-
+  Official domain registration and management for mathongosbongos.com.
+  Register, renew, or transfer your mathongosbongos.com domain with ease.
+baseurl: ""
+url: "https://mathongosbongos.com"
+twitter_username: mathongosbongos
+github_username: mathongosbongos
+
+# Domain pricing configuration
+domain_pricing:
+  com: 12.99
+  net: 14.99
+  org: 10.99
+  io: 29.99
+
+support:
+  phone: 1-800-MATHONGOS
+  hours: "24/7"
+  chat: true
+
+# Build settings
+theme: minima
+plugins:
+  - jekyll-feed
+
+# Exclude from processing.
+# The following items will not be processed, by default.
+# Any item listed under the `exclude:` key here will be automatically added to
+# the internal "default list".
+#
+# Excluded items can be processed by explicitly listing the directories or
+# their entries' file path in the `include:` list.
+#
+# exclude:
+#   - .sass-cache/
+#   - .jekyll-cache/
+#   - gemfiles/
+#   - Gemfile
+#   - Gemfile.lock
+#   - node_modules/
+#   - vendor/bundle/
+#   - vendor/cache/
+#   - vendor/gems/
+#   - vendor/ruby/
