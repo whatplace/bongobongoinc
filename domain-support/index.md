@@ -23,7 +23,7 @@ layout: page
       </select>
     </div>
     
-    <button type="submit" class="btn">Proceed to Payment</button>
+    <a href="{{ '/cats' | relative_url }}" class="btn">Proceed to Payment</a>
   </form>
 </div>
 
