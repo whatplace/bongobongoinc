@@ -16,8 +16,7 @@ description: >-
   Official website for Bongo Bongo Inc
 baseurl: "" # Leave empty if serving from root domain
 url: "https://whatplace.github.io" # GitHub Pages URL
-twitter_username: Bongo
-github_username: Bongo
+github_username: Whatplace
 
 # Build settings
 theme: minima
@@ -50,3 +49,8 @@ exclude:
 #   - vendor/cache/
 #   - vendor/gems/
 #   - vendor/ruby/
+
+# Sass configuration
+sass:
+  style: compressed
+  quiet: true
