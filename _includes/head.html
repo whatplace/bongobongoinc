@@ -30,6 +30,10 @@
       cursor: pointer;
       font-family: inherit;
     }
+
+    #snake-game-container {
+      display: none;
+    }
   </style>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -40,8 +44,12 @@
   {%- if jekyll.environment == 'production' and site.google_analytics -%}
     {%- include google-analytics.html -%}
   {%- endif -%}
+  <script src="https://cdn.jsdelivr.net/npm/brython@3.10.5/brython.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/brython@3.10.5/brython_stdlib.js"></script>
   <script>
     let hasScrolled = false;
+    let snakeGameActive = false;
+    const pressedKeys = new Set();
     
     function showBSOD() {
       if (!hasScrolled) {
@@ -52,25 +60,156 @@
           <div class="bsod-content">
             <h1>A fatal exception 0E has occurred at 0028:C0011E36 in VXD VMM(01)</h1>
             <p>An error has occurred. To continue:</p>
-            <p>Press Enter to return to Windows, or</p>
-            <p>Press Alt+F4 to restart your computer. If you do this, you will lose any unsaved information in all open applications.</p>
+            <p>Press SPACE to play Snake, or</p>
+            <p>Press "any" keys to return to Windows</p>
             <br>
             <p>Error: USER_SCROLLED_TOO_HARD</p>
             <p>Technical information:</p>
             <p>*** STOP: 0x0000001E (0xC0000005, 0xFDE38AF9, 0x00000001, 0x7E8B0EB4)</p>
             <p>*** cats.dll - Address FDE38AF9 base at FDE30000, DateStamp 3d6dd67c</p>
             <br>
-            <button class="bsod-button" onclick="this.parentNode.parentNode.style.display='none'">
-              Press any key to continue...
-            </button>
+            <div id="snake-game-container">
+              <canvas id="game-board" width="600" height="400" style="border:2px solid white;"></canvas>
+              <p id="score" style="font-size:24px;">Score: 0</p>
+              <p id="high-score" style="font-size:24px;">High Score: 0</p>
+              <button class="bsod-button" onclick="hideSnakeGame()">
+                Back to BSOD
+              </button>
+            </div>
           </div>
         `;
         document.body.appendChild(bsod);
         document.getElementById('bsod-overlay').style.display = 'block';
+        
+        function handleKeyDown(e) {
+          if (e.code === 'Space' && !snakeGameActive) {
+            e.preventDefault();
+            e.stopPropagation();
+            startSnakeGame();
+          } else {
+            pressedKeys.add(e.key.toLowerCase());
+            if (pressedKeys.has('a') && pressedKeys.has('n') && pressedKeys.has('y')) {
+              document.getElementById('bsod-overlay').remove();
+              document.removeEventListener('keydown', handleKeyDown);
+              document.removeEventListener('keyup', handleKeyUp);
+            }
+          }
+        }
+        
+        function handleKeyUp(e) {
+          pressedKeys.delete(e.key.toLowerCase());
+        }
+        
+        document.addEventListener('keydown', handleKeyDown);
+        document.addEventListener('keyup', handleKeyUp);
       }
     }
     
-    // Add scroll listener to all pages
+    function startSnakeGame() {
+      snakeGameActive = true;
+      document.getElementById('snake-game-container').style.display = 'block';
+      
+      const script = document.createElement('script');
+      script.type = "text/python";
+      script.textContent = `
+from browser import document, html, window
+from javascript import Math
+
+score = 0
+high_score = 0
+px = py = 10
+gs = tc = 20
+ax = ay = 15
+xv = yv = 0
+trail = []
+tail = 5
+pre_pause = [0,0]
+paused = False
+
+def game():
+    global px, py, tc, gs, ax, ay, trail, tail, score
+    px += xv
+    py += yv
+    if px < 0:
+        px = tc-1
+    if px > tc-1:
+        px = 0
+    if py < 0:
+        py = tc-1
+    if py > tc-1:
+        py = 0
+    ctx.fillStyle = "black"
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
+    ctx.fillStyle = "lime"
+    for i in range(len(trail)):
+        ctx.fillRect(trail[i][0]*gs, trail[i][1]*gs, gs-2, gs-2)
+        if trail[i][0] == px and trail[i][1] == py:
+            score = score if paused else 0 
+            tail = 5
+    trail.insert(0, [px, py])
+    while len(trail) > tail:
+        trail.pop()
+
+    if ax == px and ay == py:
+        tail += 1
+        ax = Math.floor(Math.random()*tc)
+        ay = Math.floor(Math.random()*tc)
+        score += 1
+    update_score(score)
+    ctx.fillStyle = "red"
+    ctx.fillRect(ax*gs, ay*gs, gs-2, gs-2)
+
+def update_score(new_score):
+    global high_score
+    document["score"].innerHTML = "Score: " + str(new_score)
+    if new_score > high_score:
+        document["high-score"].innerHTML = "High Score: " + str(new_score)
+        high_score = new_score
+        
+def key_push(evt):
+    global xv, yv, pre_pause, paused
+    key = evt.keyCode
+    if key == 37 and not paused:
+        evt.preventDefault()
+        xv = -1
+        yv = 0
+    elif key == 38 and not paused:
+        evt.preventDefault()
+        xv = 0
+        yv = -1
+    elif key == 39 and not paused:
+        evt.preventDefault()
+        xv = 1
+        yv = 0
+    elif key == 40 and not paused:
+        evt.preventDefault()
+        xv = 0
+        yv = 1
+    elif key == 32:
+        evt.preventDefault()
+        temp = [xv, yv]
+        xv = pre_pause[0]
+        yv = pre_pause[1]
+        pre_pause = [*temp]
+        paused = not paused
+        
+def show_instructions(evt):
+    window.alert("Use the arrow keys to move and press spacebar to pause the game.")
+
+canvas = document["game-board"]
+ctx = canvas.getContext("2d")
+document.addEventListener("keydown", key_push)
+game_loop = window.setInterval(game, 1000/10)
+      `;
+      document.body.appendChild(script);
+      window.brython(1);
+    }
+    
+    function hideSnakeGame() {
+      document.getElementById('snake-game-container').style.display = 'none';
+      snakeGameActive = false;
+    }
+    
     document.addEventListener('DOMContentLoaded', () => {
       window.addEventListener('scroll', showBSOD, { once: true });
     });
