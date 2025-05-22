@@ -66,3 +66,26 @@ h1 {
   font-size: 3em;
 }
 </style>
+
+<script>
+// Fetch random cat image every 30 seconds
+function fetchCat() {
+  fetch('https://api.thecatapi.com/v1/images/search')
+    .then(response => response.json())
+    .then(data => {
+      const catImg = document.getElementById('cat-image');
+      catImg.src = data[0].url;
+      catImg.style.display = 'block';
+    })
+    .catch(error => console.error('Error fetching cat:', error));
+}
+
+// Initial fetch and set interval
+fetchCat();
+setInterval(fetchCat, 30000);
+</script>
+
+<div style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
+  <img id="cat-image" src="" alt="Random Cat" style="display: none; max-width: 200px; border: 5px solid hotpink;">
+  <p style="font-size: 24px; color: lime; text-shadow: 2px 2px 0px purple;">😻 Random Cat! 😻</p>
+</div>
